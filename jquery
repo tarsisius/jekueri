@@ -1,0 +1,16 @@
+//<![CDATA[
+function ScrollTop(){$('html, body').animate({scrollTop:'0px'},100);}
+function initialBack(){$(window).on('popstate',function(){var link=window.location.href;LoadPost(link,false);});}
+function initialLink(){$('a.linktoload,.thumbnail,#blog-pager-older-link,#blog-pager-newer-link').click(function(event){event.preventDefault();var link=$(this).attr('href');if(!$(this).hasClass('active')){LoadPost(link,true);}});}
+function initialTitle(url,data,status){var title=$(data).filter('title').text();if(url!=window.location&&status){window.history.pushState(data,title,url);}
+document.title=title;}
+function initialHistory(url){if(url!=window.location){window.history.pushState({path:url},'',url);}}
+function initialLoadMore(data){var linkloadmore=$(data).find('#linkloadmore');if(linkloadmore.length==0){$("#linkloadmore").remove();}else if(linkloadmore.length==1){var clone=linkloadmore.clone();$(".content-wrapper").append(clone);LoadMore();}}
+function LoadMore(){$('#linkloadmore').click(function(event){event.preventDefault();$('#linkloadmore a span').html('Loading...');var link=$("#Blog1_pagination-old").attr('href');$.get(link,function(data){var source=$(data).find('.content-wrapper').length?$(data):$('<div></div>');$(".content-wrapper").append(source.find('.content-wrapper').html());$("#linkloadmore").html(source.find('#Blog1_pagination-old').clone());initialLink();},"html");})}
+function LoadPost(url,boolean){animationstart();initialHistory(url);$(".content-wrapper").load(url+' .content',function(data){var disqus_config=function(){this.page.url=''+url+'';this.page.identifier=''+data+'';this.page.title=''+data+'';};(function(){var d=document,s=d.createElement('script');s.src='//mediapamungkas.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();initialLink();initialTitle(url,data,boolean);initialLoadMore(data);ScrollTop();animationfinish();})}
+function animationstart(){$('.content-wrapper,#linkloadmore,#footer-wrapper').fadeOut();}
+function animationfinish(){$('.content-wrapper,#footer-wrapper').fadeIn();}
+initialLink();initialBack();LoadMore();$(window).bind("load",function(){$("#loader-wrapper").fadeOut(1e3)});!function(){var e=document,t=e.createElement("script");t.src="//mediapamungkas.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)}();$(document).ready(function(){var stickyNavTop=$('nav').offset().top;var stickyNav=function(){var scrollTop=$(window).scrollTop();if(scrollTop>stickyNavTop){$('nav').css({'position':'fixed','top':0,'z-index':9999});}else{$('nav').css({'position':'relative'});}};stickyNav();$(window).scroll(function(){stickyNav();});});
+//]]>
+function SearchBTN(){var x=document.getElementById(&quot;searching&quot;);if(x.className.indexOf(&quot;show-search&quot;)==-1){x.className+=&quot;show-search&quot;;}else{x.className=x.className.replace(&quot;show-search&quot;,&quot;&quot;);}}
+$(&quot;#SearchBTN&quot;).click(function() {$(&quot;html, body&quot;).animate({ scrollTop: 0 }, &quot;slow&quot;);return false;});
